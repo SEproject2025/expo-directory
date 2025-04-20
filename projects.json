@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Evera",
+    "description": "Evera is a plant care web application developed to help plant lovers manage their indoor or outdoor gardens with ease. The app allows users to create a personalized plant collection by adding details about each plant, including species, care requirements, and plant profile pictures. Evera’s reminder system gives timely notifications in the app for watering, fertilizing, and other essential tasks, tailored to each plant's unique needs. Designed with a fresh and user-friendly interface, Evera makes it easier than ever for people to nurture their plants, whether they’re beginners or seasoned gardeners. ",
+    "link": "https://evera.green",
+    "contributors": ["Anna", "Jared", "Gabriel", "Daniel", "Logan"]
+  },
+  {
+    "title": "Evangelium",
+    "description": "Evangelium is a web application designed to connect missionaries and churches, simplifying the often long and difficult process of seeking support. By leveraging its matching services, Evangelium helps churches find missionaries whose vision aligns with theirs and enables missionaries to connect with churches willing to support their mission. While the challenge of securing and offering support remains, Evangelium seeks to harness technology to spread the gospel, ensuring that more people come to know Christ and make Him known. ",
+    "link": "https://evangelium.app",
+    "contributors": ["Caleb", "Rachel", "Christian", "Jez", "Niwe"]
+  },
+  {
+    "title": "Bolt Away",
+    "description": "Bolt Away is a fast-paced multiplayer action platformer. In it, players race against one another and the clock. As time ticks away, a hulking wall of lava pours towards any poor player who falls too far behind. Endless, randomly generated levels, dangerous, deceptive traps, and sneaky, speedy enemy robots are just a few of the challenges players of Bolt Away will face. This list doesn't even include the shenanigans their fellow players may raise. Powerups and other goodies give players the power to speed ahead, slow their opponents down, and win the race by any means necessary.",
+    "link": "#",
+    "contributors": ["Jonah", "Steven", "Jack", "Beau"]
+  },
+  {
+    "title": "Spaced Out",
+    "description": "Go visit the super secret lab in AC212! :) Spaced Out is a gamified to-do application to help keep you on top of your tasks. It provides an interface that allows you to set tasks and reminders for yourself and rewards you for completing them! Upon the completion of a task, you will earn gold to purchase cosmetics for your character. You can use your character to defend your ship from alien lifeforms. When an alien is successfully defeated, XP will be granted that can be used to upgrade the damage you do. The more upgrades you get, the more enemies attacking your ship you can challenge, allowing you to advance through levels and get as high a score as possible.",
+    "link": "#",
+    "contributors": ["Daniel", "Timothy", "Ian"]
+  },
+  {
+    "title": "Eagor AI",
+    "description": "Eagor AI is an AI-powered chatbot designed to answer all of your questions about PCC, particularly with the handbook, catalog, and other PCC-related items. Questions like \"What is a 3+ pass?\", \"How many class cuts do seniors get?\", or \"What class number is Data Structure and Algorithms?\" are accurately answered including where the chatbot found the answer. With an integrated admin panel to edit the data feed for Eagor, a user-friendly interface, and customization features, Eagor AI is fully equipped to answer all of your questions. All you need is a pcci.edu or abeka.com email address, and you can sign up and get answers to all your burning questions about PCC.",
+    "link": "#",
+    "contributors": ["peopls"]
+  },
+  {
+    "title": "PCC Thrift",
+    "description": "PCC Thrift is a Chrome extension for Eagle's Nest that provides PCC students, staff, and faculty with a convenient platform to buy and sell items such as books, clothing, and more. Users can create listings with photos and descriptions, set payment options, and communicate with buyers and sellers. Meanwhile, administrators manage and maintain the marketplace through a mirrored, privilege-elevated admin extension.",
+    "link": "#",
+    "contributors": ["joe"]
+  },
+  {
+    "title": "CyberShield Solutions",
+    "description": "CyberShield Solutions is an interactive cybersecurity education platform designed to evaluate and enhance users' cybersecurity knowledge through modules and quizzes. Upon completing an initial assessment, users receive a Cyber IQ score and can improve it by successfully passing quizzes. A leaderboard tracks user progress, encouraging competition and engagement. Users also earn achievement badges as they advance. Admins and editors maintain the platform by managing educational video links and quiz content, ensuring up-to-date and relevant learning materials.",
+    "link": "#",
+    "contributors": ["Hannah", "Emily", "Lydia", "Raeanna", "Julianna"]
+  }
+]
