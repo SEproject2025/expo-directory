@@ -3,7 +3,7 @@
 body {
   margin: 0;
   font-family: "Hind Mysuru", sans-serif;
-  background: linear-gradient(to right, #38c6f4, #c86585);
+  background: linear-gradient(120deg, #38c6f4, #c86585);
 }
 
 .App {
@@ -36,7 +36,7 @@ select {
   height: 260px;
   perspective: 1000px;
   backface-visibility: hidden;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 12px;
   padding: 1rem;
   box-sizing: border-box;

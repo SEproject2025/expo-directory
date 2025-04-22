@@ -78,16 +78,7 @@ function App() {
   return (
     <div className="App">
       <div className="center-container">
-        <h1>Software Engineering Expo</h1>
-
-        <select onChange={(e) => setFilter(e.target.value)} value={filter}>
-          <option value="">All contributors</option>
-          {contributors.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+        <h2>Software Engineering Expo</h2>
       </div>
 
       <div className="rotating-container">
@@ -100,7 +91,7 @@ function App() {
           >
             <h3>{project.title}</h3>
             <p><strong>By:</strong> {project.contributors.join(", ")}</p>
-            <p>{project.description}</p>
+
             <a href={project.link} target="_blank" rel="noreferrer">View Project</a>
           </div>
         ))}
