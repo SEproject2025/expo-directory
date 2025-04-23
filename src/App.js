@@ -1,11 +1,99 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+import { useDrag } from 'react-use-gesture';
 import { Routes, Route } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import "./App.css";
+
+function Arrow({ rotation }) {
+  const meshRef = useRef();
+  
+  return (
+    <mesh ref={meshRef} rotation={rotation} position={[0, 0, 0]}>
+      {/* Arrow shaft */}
+      <cylinderGeometry args={[0.05, 0.05, 2, 16]} />
+      <meshStandardMaterial color="white" />
+      {/* Arrowhead */}
+      <mesh position={[0, 1.1, 0]}>
+        <coneGeometry args={[0.15, 0.4, 32]} />
+        <meshStandardMaterial color="white" />
+      </mesh>
+    </mesh>
+  );
+}
+
 function CountdownArrowApp() {
   const [timeLeft, setTimeLeft] = useState(0);
-  const [rotation, setRotation] = useState(0);
   const [nextTargetTime, setNextTargetTime] = useState(null);
+  const [rotation, setRotation] = useState([Math.PI / 2, 0, 0]);
+  const [isDragging, setIsDragging] = useState(false); // Track if dragging
+  const [isLocked, setIsLocked] = useState(false); // State to lock/unlock rotation
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 }); // Track initial mouse position during drag
+  const [useCanvas, setUseCanvas] = useState(true);
+  const [angle, setAngle] = useState(0);
+  const canvasRef = useRef(null);
+
+  const handleMouseDown = (event) => {
+    setIsDragging(true);
+    setStartPos({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleMouseMove = (event) => {
+    if (!useCanvas) return;
+    if (isLocked) return;
+    if (!isDragging) return; // Only rotate if dragging
+
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    const deltaX = mouseX - startPos.x;
+    const deltaY = mouseY - startPos.y;
+
+    // Update rotation based on the drag movement
+    setRotation([
+      0, // No Z-axis rotation
+      (deltaX / rect.width) * Math.PI * 2, // Horizontal drag - Rotate Y
+      (deltaY / rect.height) * Math.PI, // Vertical drag - Rotate X
+    ]);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false); // Stop rotation when mouse is released
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'l' || event.key === 'L') {
+      setIsLocked((prev) => !prev);
+    }
+    if (event.key === 'o' || event.key === 'O') {
+      setUseCanvas((prev) => !prev);
+    }
+  };
+
+  const handleClick = () => {
+    setAngle((prev) => (prev + 90) % 360);
+  };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    canvas.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("keydown", handleKeyDown); // Listen for key events
+
+    // Clean up event listeners on component unmount
+    return () => {
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isDragging, startPos, isLocked]); // Added isLocked to effect dependencies
+
 
   const updateNextTargetTime = (targetList) => {
     const now = new Date();
@@ -54,8 +142,6 @@ function CountdownArrowApp() {
     return () => clearInterval(timer);
   }, [nextTargetTime]);
 
-  const rotateArrow = () => setRotation((prev) => prev + 90);
-
   const formatTime = (totalSeconds) => {
     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
     const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
@@ -64,21 +150,29 @@ function CountdownArrowApp() {
   };
 
   return (
-    <div className="center-container">
-      <div className="text-6xl font-bold text-white mb-10">
-        <h1>Next presentation in: {formatTime(timeLeft)}</h1>
-      </div>
-      <motion.div
-        onClick={rotateArrow}
-        className="cursor-pointer text-white relative"
-        animate={{ rotate: rotation }}
-        transition={{ duration: 0.4 }}
-        style={{ width: '200px', height: '200px' }}
-      >
-        {/* External SVG for the arrow */}
-        <img src="/arrow-pointing-right.svg" alt="Arrow" className="arrow" 
-                  style={{ maxWidth: '100%', maxHeight: '100%' }}/>
-      </motion.div>
+    <div
+      className="center-container"
+      style={{ cursor: 'grab' }}
+      onClick={handleClick}
+    >
+      <h1>Next presentation in:</h1>
+      <h1 style = {{textAlign: 'center'}}>{formatTime(timeLeft)}</h1>
+      {useCanvas ? (
+        <Canvas style={{ width: '100%', height: 'auto' }} camera={{ position: [0, 0, 2] }} ref={canvasRef}>
+          <ambientLight />
+          <directionalLight position={[2, 2, 5]} />
+          <Arrow rotation={rotation} />
+        </Canvas>
+      ) : (
+        <img style={{
+          width: '100%', 
+          height: 'auto',
+          transform: `rotate(${angle}deg)`,
+          transition: 'transform 0.3s ease-in-out',
+          maxWidth: '200px'
+        }} src="/arrow-pointing-right.svg"></img>
+      )}
+      <h3>* follow the arrow to get to the next presentation</h3>
     </div>
   );
 }
