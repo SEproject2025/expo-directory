@@ -42,7 +42,6 @@ select {
 
 .card {
   color: black;
-  position: absolute;
   width: 220px;
   height: 260px;
   perspective: 1000px;
@@ -51,14 +50,12 @@ select {
   border-radius: 12px;
   padding: 1rem;
   box-sizing: border-box;
-  cursor: pointer;
   pointer-events: auto;
-  overflow: hidden;
-  transition: transform 0.3s ease-out; /* Add smooth transition */
-}
-
-.card:hover {
-  transform: scale(2);
+  padding: 20px;
+  width: 220px;
+  text-align: center;
+  transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .center-container {
@@ -67,4 +64,16 @@ select {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* Center the container */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  justify-items: center;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
