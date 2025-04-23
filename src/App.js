@@ -30,9 +30,72 @@ function Thrift() {
   return null;
 }
 
-function CountdownArrowApp() {
+function PresentationCountdown() {
   const [timeLeft, setTimeLeft] = useState(0);
   const [nextTargetTime, setNextTargetTime] = useState(null);
+
+  const updateNextTargetTime = (targetList) => {
+    const now = new Date();
+    const futureTimes = targetList
+      .map(t => new Date(t))
+      .filter(t => t > now)
+      .sort((a, b) => a - b);
+
+    if (futureTimes.length > 0) {
+      setNextTargetTime(futureTimes[0]);
+    } else {
+      setNextTargetTime(null);
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchTargetTimes = () => {
+      fetch('/target-time.json')
+        .then((res) => res.json())
+        .then((data) => updateNextTargetTime(data.targetTimes || []))
+        .catch((err) => console.error("Failed to fetch target times", err));
+    };
+
+    fetchTargetTimes();
+    const intervalId = setInterval(fetchTargetTimes, 10000); // poll every 10s
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (!nextTargetTime) return;
+
+    const timer = setInterval(() => {
+      const now = new Date();
+      const diff = nextTargetTime - now;
+
+      if (diff <= 0) {
+        setTimeLeft(0);
+        // Re-check immediately in case the next target time has arrived
+        setNextTargetTime(null); 
+      } else {
+        setTimeLeft(Math.floor(diff / 1000));
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [nextTargetTime]);
+
+  const formatTime = (totalSeconds) => {
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+  return (
+    <span>{formatTime(timeLeft)}</span>
+  )
+
+}
+
+function CountdownArrowApp() {
   const [rotation, setRotation] = useState([Math.PI / 2, 0, 0]);
   const [isDragging, setIsDragging] = useState(false); // Track if dragging
   const [isLocked, setIsLocked] = useState(false); // State to lock/unlock rotation
@@ -102,59 +165,6 @@ function CountdownArrowApp() {
   }, [isDragging, startPos, isLocked]); // Added isLocked to effect dependencies
 
 
-  const updateNextTargetTime = (targetList) => {
-    const now = new Date();
-    const futureTimes = targetList
-      .map(t => new Date(t))
-      .filter(t => t > now)
-      .sort((a, b) => a - b);
-
-    if (futureTimes.length > 0) {
-      setNextTargetTime(futureTimes[0]);
-    } else {
-      setNextTargetTime(null);
-    }
-  };
-
-  useEffect(() => {
-    const fetchTargetTimes = () => {
-      fetch('/target-time.json')
-        .then((res) => res.json())
-        .then((data) => updateNextTargetTime(data.targetTimes || []))
-        .catch((err) => console.error("Failed to fetch target times", err));
-    };
-
-    fetchTargetTimes();
-    const intervalId = setInterval(fetchTargetTimes, 10000); // poll every 10s
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    if (!nextTargetTime) return;
-
-    const timer = setInterval(() => {
-      const now = new Date();
-      const diff = nextTargetTime - now;
-
-      if (diff <= 0) {
-        setTimeLeft(0);
-        // Re-check immediately in case the next target time has arrived
-        setNextTargetTime(null); 
-      } else {
-        setTimeLeft(Math.floor(diff / 1000));
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [nextTargetTime]);
-
-  const formatTime = (totalSeconds) => {
-    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-    const seconds = String(totalSeconds % 60).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
-  };
 
   return (
     <div
@@ -163,7 +173,7 @@ function CountdownArrowApp() {
       onClick={handleClick}
     >
       <h1>Next presentation in:</h1>
-      <h1 style = {{textAlign: 'center'}}>{formatTime(timeLeft)}</h1>
+      <h1 style = {{textAlign: 'center'}}><PresentationCountdown/></h1>
       {useCanvas ? (
         <Canvas style={{ width: '100%', height: 'auto' }} camera={{ position: [0, 0, 2] }} ref={canvasRef}>
           <ambientLight />
@@ -208,7 +218,7 @@ function Home() {
 
   return (
     <div className="App">
-        <h1>2025 Software Expo</h1>
+      <h1>2025 Software Expo</h1>
 
       {/* Optional filter UI */}
       {/* <select onChange={(e) => setFilter(e.target.value)} value={filter}>
@@ -218,7 +228,14 @@ function Home() {
         ))}
       </select> */}
 
+
       <div className="grid-container">
+        <div className="card">
+          <b>Next presentation in: </b>
+          <PresentationCountdown/>
+          <p>Did you know that there are expo themed stickers? Attend a presentation to get one!</p>
+        </div>
+
         {filteredProjects.map((project, idx) => (
           <div
             key={idx}
@@ -234,6 +251,11 @@ function Home() {
             )}
           </div>
         ))}
+
+        <div className="card">
+          <h3>Confused?</h3>
+          <p>You should go to an expo presentation! Or, perhaps, talk to one of those blue-shirted people. ;)</p>
+        </div>
       </div>
     </div>
   );
