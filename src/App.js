@@ -245,7 +245,7 @@ function Home() {
             <h3>{project.title}</h3>
             <p><strong>By:</strong> {project.contributors.join(", ")}</p>
             {project.inperson !== true ? (
-              <a href={project.link} target="_blank" rel="noreferrer">View Project</a>
+              <a href="#">View Project</a>
             ) : (
               <i>{project.inpersonmessage}</i>
             )}
