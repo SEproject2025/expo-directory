@@ -15,13 +15,15 @@
     "title": "Bolt Away",
     "description": "Bolt Away is a fast-paced multiplayer action platformer. In it, players race against one another and the clock. As time ticks away, a hulking wall of lava pours towards any poor player who falls too far behind. Endless, randomly generated levels, dangerous, deceptive traps, and sneaky, speedy enemy robots are just a few of the challenges players of Bolt Away will face. This list doesn't even include the shenanigans their fellow players may raise. Powerups and other goodies give players the power to speed ahead, slow their opponents down, and win the race by any means necessary.",
     "link": "#",
-    "contributors": ["Jonah", "Steven", "Jack", "Beau"]
+    "contributors": ["Jonah", "Steven", "Jack", "Beau"],
+    "inperson": true
   },
   {
     "title": "Spaced Out",
     "description": "Go visit the super secret lab in AC212! :) Spaced Out is a gamified to-do application to help keep you on top of your tasks. It provides an interface that allows you to set tasks and reminders for yourself and rewards you for completing them! Upon the completion of a task, you will earn gold to purchase cosmetics for your character. You can use your character to defend your ship from alien lifeforms. When an alien is successfully defeated, XP will be granted that can be used to upgrade the damage you do. The more upgrades you get, the more enemies attacking your ship you can challenge, allowing you to advance through levels and get as high a score as possible.",
     "link": "#",
-    "contributors": ["Daniel", "Timothy", "Ian"]
+    "contributors": ["Daniel", "Timothy", "Ian"],
+    "inperson": true
   },
   {
     "title": "Eagor AI",

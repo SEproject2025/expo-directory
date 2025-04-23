@@ -1,7 +1,51 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Routes, Route } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import "./App.css";
 
-function App() {
+function CountdownArrowApp() {
+  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
+  const [rotation, setRotation] = useState(0);
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const rotateArrow = () => setRotation((prev) => prev + 90);
+
+  const formatTime = (totalSeconds) => {
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+  return (
+    <div className="center-container">
+      <div className="text-6xl font-bold text-white mb-10">
+        <h1>Next presentation in: {formatTime(timeLeft)}</h1>
+      </div>
+      <motion.div
+        onClick={rotateArrow}
+        className="cursor-pointer text-white relative"
+        animate={{ rotate: rotation }}
+        transition={{ duration: 0.4 }}
+        style={{ width: '200px', height: '200px' }}
+      >
+        {/* External SVG for the arrow */}
+        <img src="/arrow-pointing-right.svg" alt="Arrow" className="arrow" 
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}/>
+      </motion.div>
+    </div>
+  );
+}
+
+
+function Home() {
   const [filter, setFilter] = useState("");
   const [projects, setProjects] = useState([]);
   
@@ -97,6 +141,15 @@ function App() {
         ))}
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/countdown" element={<CountdownArrowApp />} />
+    </Routes>
   );
 }
 
