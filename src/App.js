@@ -30,7 +30,7 @@ function Thrift() {
   return null;
 }
 
-function PresentationCountdown() {
+function PresentationCountdown({styling}) {
   const [timeLeft, setTimeLeft] = useState(0);
   const [nextTargetTime, setNextTargetTime] = useState(null);
 
@@ -89,7 +89,7 @@ function PresentationCountdown() {
     return `${hours}:${minutes}:${seconds}`;
   };
 
-  return (<span>
+  return (<span style={{styling}}>
     {timeLeft > 0 ? formatTime(timeLeft) : "No more presentations today. :("}
   </span>)
 
@@ -173,7 +173,7 @@ function CountdownArrowApp() {
       onClick={handleClick}
     >
       <h1>Next presentation in:</h1>
-      <h1 style = {{textAlign: 'center'}}><PresentationCountdown/></h1>
+      <h1 style = {{textAlign: 'center', fontSize: "10em" }}><PresentationCountdown/></h1>
       {useCanvas ? (
         <Canvas style={{ width: '100%', height: 'auto' }} camera={{ position: [0, 0, 2] }} ref={canvasRef}>
           <ambientLight />
