@@ -89,9 +89,9 @@ function PresentationCountdown() {
     return `${hours}:${minutes}:${seconds}`;
   };
 
-  return (
-    <span>{formatTime(timeLeft)}</span>
-  )
+  return (<span>
+    {timeLeft > 0 ? formatTime(timeLeft) : "No more presentations today. :("}
+  </span>)
 
 }
 
