@@ -2,18 +2,57 @@ import React, { useState, useEffect, useRef } from "react";
 import { Routes, Route } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import "./App.css";
-
 function CountdownArrowApp() {
-  const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
+  const [timeLeft, setTimeLeft] = useState(0);
   const [rotation, setRotation] = useState(0);
+  const [nextTargetTime, setNextTargetTime] = useState(null);
+
+  const updateNextTargetTime = (targetList) => {
+    const now = new Date();
+    const futureTimes = targetList
+      .map(t => new Date(t))
+      .filter(t => t > now)
+      .sort((a, b) => a - b);
+
+    if (futureTimes.length > 0) {
+      setNextTargetTime(futureTimes[0]);
+    } else {
+      setNextTargetTime(null);
+    }
+  };
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    const fetchTargetTimes = () => {
+      fetch('/target-time.json')
+        .then((res) => res.json())
+        .then((data) => updateNextTargetTime(data.targetTimes || []))
+        .catch((err) => console.error("Failed to fetch target times", err));
+    };
+
+    fetchTargetTimes();
+    const intervalId = setInterval(fetchTargetTimes, 10000); // poll every 10s
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    if (!nextTargetTime) return;
+
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+      const now = new Date();
+      const diff = nextTargetTime - now;
+
+      if (diff <= 0) {
+        setTimeLeft(0);
+        // Re-check immediately in case the next target time has arrived
+        setNextTargetTime(null); 
+      } else {
+        setTimeLeft(Math.floor(diff / 1000));
+      }
     }, 1000);
+
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [nextTargetTime]);
 
   const rotateArrow = () => setRotation((prev) => prev + 90);
 
