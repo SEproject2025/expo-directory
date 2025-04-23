@@ -23,6 +23,13 @@ function Arrow({ rotation }) {
   );
 }
 
+function Thrift() {
+  useEffect(() => {
+    window.location.href = "/pcc-thrift-instructions 1.html";
+  }, []);
+  return null;
+}
+
 function CountdownArrowApp() {
   const [timeLeft, setTimeLeft] = useState(0);
   const [nextTargetTime, setNextTargetTime] = useState(null);
@@ -255,7 +262,7 @@ function Home() {
   return (
     <div className="App">
       <div className="center-container">
-        <h2>Software Engineering Expo</h2>
+        <h2>2025 Software Expo</h2>
       </div>
 
       <div className="rotating-container">
@@ -268,8 +275,10 @@ function Home() {
           >
             <h3>{project.title}</h3>
             <p><strong>By:</strong> {project.contributors.join(", ")}</p>
-
-            <a href={project.link} target="_blank" rel="noreferrer">View Project</a>
+            { project.inperson !== true ?
+              ( <a href={project.link} target="_blank" rel="noreferrer">View Project</a> ) :
+              ( <i>{project.inpersonmessage}</i> )
+            }
           </div>
         ))}
       </div>
@@ -282,6 +291,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/countdown" element={<CountdownArrowApp />} />
+      <Route path="/thrift" element={<Thrift />} />
     </Routes>
   );
 }

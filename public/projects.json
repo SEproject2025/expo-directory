@@ -16,31 +16,33 @@
     "description": "Bolt Away is a fast-paced multiplayer action platformer. In it, players race against one another and the clock. As time ticks away, a hulking wall of lava pours towards any poor player who falls too far behind. Endless, randomly generated levels, dangerous, deceptive traps, and sneaky, speedy enemy robots are just a few of the challenges players of Bolt Away will face. This list doesn't even include the shenanigans their fellow players may raise. Powerups and other goodies give players the power to speed ahead, slow their opponents down, and win the race by any means necessary.",
     "link": "#",
     "contributors": ["Jonah", "Steven", "Jack", "Beau"],
-    "inperson": true
+    "inperson": true,
+    "inpersonmessage": "Look in the hallway for the Games sign!"
   },
   {
     "title": "Spaced Out",
     "description": "Go visit the super secret lab in AC212! :) Spaced Out is a gamified to-do application to help keep you on top of your tasks. It provides an interface that allows you to set tasks and reminders for yourself and rewards you for completing them! Upon the completion of a task, you will earn gold to purchase cosmetics for your character. You can use your character to defend your ship from alien lifeforms. When an alien is successfully defeated, XP will be granted that can be used to upgrade the damage you do. The more upgrades you get, the more enemies attacking your ship you can challenge, allowing you to advance through levels and get as high a score as possible.",
     "link": "#",
-    "contributors": ["Daniel", "Timothy", "Ian"],
-    "inperson": true
+    "contributors": ["Daniel", "Tim", "Ian", "Jet", "Noah"],
+    "inperson": true,
+    "inpersonmessage": "Look in the hallway for the Mobile App sign!"
   },
   {
     "title": "Eagor AI",
     "description": "Eagor AI is an AI-powered chatbot designed to answer all of your questions about PCC, particularly with the handbook, catalog, and other PCC-related items. Questions like \"What is a 3+ pass?\", \"How many class cuts do seniors get?\", or \"What class number is Data Structure and Algorithms?\" are accurately answered including where the chatbot found the answer. With an integrated admin panel to edit the data feed for Eagor, a user-friendly interface, and customization features, Eagor AI is fully equipped to answer all of your questions. All you need is a pcci.edu or abeka.com email address, and you can sign up and get answers to all your burning questions about PCC.",
-    "link": "#",
-    "contributors": ["peopls"]
+    "link": "https://eagorai.com",
+    "contributors": ["Jonathan", "Junseok", "Yaomin", "Jack", "Aidan", "Spencer"]
   },
   {
     "title": "PCC Thrift",
     "description": "PCC Thrift is a Chrome extension for Eagle's Nest that provides PCC students, staff, and faculty with a convenient platform to buy and sell items such as books, clothing, and more. Users can create listings with photos and descriptions, set payment options, and communicate with buyers and sellers. Meanwhile, administrators manage and maintain the marketplace through a mirrored, privilege-elevated admin extension.",
-    "link": "#",
-    "contributors": ["joe"]
+    "link": "/#thrift",
+    "contributors": ["Josh V", "Isaac", "Jason", "Josh K", "Carter", "Josiah"]
   },
   {
     "title": "CyberShield Solutions",
     "description": "CyberShield Solutions is an interactive cybersecurity education platform designed to evaluate and enhance users' cybersecurity knowledge through modules and quizzes. Upon completing an initial assessment, users receive a Cyber IQ score and can improve it by successfully passing quizzes. A leaderboard tracks user progress, encouraging competition and engagement. Users also earn achievement badges as they advance. Admins and editors maintain the platform by managing educational video links and quiz content, ensuring up-to-date and relevant learning materials.",
-    "link": "#",
+    "link": "https://www.cyber-shield-solutions.org",
     "contributors": ["Hannah", "Emily", "Lydia", "Raeanna", "Julianna"]
   }
 ]
