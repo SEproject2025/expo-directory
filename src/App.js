@@ -30,69 +30,83 @@ function Thrift() {
   return null;
 }
 
-function PresentationCountdown({styling}) {
+
+function PresentationCountdown({ styling }) {
   const [timeLeft, setTimeLeft] = useState(0);
   const [nextTargetTime, setNextTargetTime] = useState(null);
+  const [inProgressUntil, setInProgressUntil] = useState(null);
 
-  const updateNextTargetTime = (targetList) => {
-    const now = new Date();
-    const futureTimes = targetList
-      .map(t => new Date(t))
-      .filter(t => t > now)
-      .sort((a, b) => a - b);
+  const fetchAndUpdateTargetTime = async () => {
+    if (inProgressUntil && new Date() < inProgressUntil) return; // Don't fetch new times mid-presentation
 
-    if (futureTimes.length > 0) {
-      setNextTargetTime(futureTimes[0]);
-    } else {
-      setNextTargetTime(null);
+    try {
+      const res = await fetch('/target-time.json');
+      const data = await res.json();
+      const targetList = data.targetTimes || [];
+
+      const now = new Date();
+      const futureTimes = targetList
+        .map(t => new Date(t))
+        .filter(t => t > now)
+        .sort((a, b) => a - b);
+
+      setNextTargetTime(futureTimes.length > 0 ? futureTimes[0] : null);
+    } catch (err) {
+      console.error("Failed to fetch target times", err);
     }
   };
 
+  useEffect(() => {
+    fetchAndUpdateTargetTime();
+    const fetchInterval = setInterval(fetchAndUpdateTargetTime, 10000);
+    return () => clearInterval(fetchInterval);
+  }, [inProgressUntil]);
 
   useEffect(() => {
-    const fetchTargetTimes = () => {
-      fetch('/target-time.json')
-        .then((res) => res.json())
-        .then((data) => updateNextTargetTime(data.targetTimes || []))
-        .catch((err) => console.error("Failed to fetch target times", err));
-    };
-
-    fetchTargetTimes();
-    const intervalId = setInterval(fetchTargetTimes, 10000); // poll every 10s
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    if (!nextTargetTime) return;
-
-    const timer = setInterval(() => {
+    const interval = setInterval(() => {
       const now = new Date();
-      const diff = nextTargetTime - now;
 
-      if (diff <= 0) {
-        setTimeLeft(0);
-        // Re-check immediately in case the next target time has arrived
-        setNextTargetTime(null); 
+      if (inProgressUntil && now < inProgressUntil) {
+        setTimeLeft(0); // We're in presentation mode
+        return;
+      }
+
+      if (nextTargetTime) {
+        const diff = nextTargetTime - now;
+
+        if (diff <= 0) {
+          // Presentation just started
+          const end = new Date(now.getTime() + 10 * 60 * 1000);
+          setInProgressUntil(end);
+          setNextTargetTime(null);
+          setTimeLeft(0);
+        } else {
+          setTimeLeft(Math.floor(diff / 1000));
+        }
       } else {
-        setTimeLeft(Math.floor(diff / 1000));
+        setTimeLeft(0);
       }
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, [nextTargetTime]);
+    return () => clearInterval(interval);
+  }, [nextTargetTime, inProgressUntil]);
 
-  const formatTime = (totalSeconds) => {
-    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-    const seconds = String(totalSeconds % 60).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+  const formatTime = (seconds) => {
+    const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const secs = String(seconds % 60).padStart(2, '0');
+    return `${hrs}:${mins}:${secs}`;
   };
 
-  return (<span style={{styling}}>
-    {timeLeft > 0 ? formatTime(timeLeft) : "No more presentations today. :("}
-  </span>)
-
+  return (
+    <span style={styling}>
+      {inProgressUntil && new Date() < inProgressUntil
+        ? "Presentation in progress!"
+        : timeLeft > 0
+          ? formatTime(timeLeft)
+          : "No more presentations today. :("}
+    </span>
+  );
 }
 
 function CountdownArrowApp() {
@@ -240,7 +254,7 @@ function Home() {
           <div
             key={idx}
             className="card"
-            onClick={() => window.open(project.link, "_blank")}
+            onClick={() => project.inperson !== true ? window.open(project.link, "_blank") : null }
           >
             <h3>{project.title}</h3>
             <p><strong>By:</strong> {project.contributors.join(", ")}</p>
